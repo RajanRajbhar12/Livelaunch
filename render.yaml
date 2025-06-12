@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: liftdrill
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+    healthCheckPath: /
+    autoDeploy: true
+    plan: free
+    # Specify the Node.js version
+    nodeVersion: 18.x
+    # Configure scaling
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+    # Configure headers for security
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block 
