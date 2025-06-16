@@ -162,6 +162,55 @@ export default function Home() {
               <div className="h-1 w-20 bg-gradient-to-r from-primary to-accent mx-auto mt-2 rounded-full" />
             </motion.div>
 
+            {/* Waitlist Form - Moved to top */}
+            <motion.form 
+              variants={fadeInUp}
+              onSubmit={handleSubmit}
+              className="max-w-md mx-auto mb-12 space-y-4"
+            >
+              <div className="space-y-4">
+                <div className="relative">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="w-full px-6 py-4 rounded-xl bg-blue-gray backdrop-blur-sm border border-blue-black shadow-lg shadow-primary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-white placeholder-light-gray"
+                    required
+                  />
+                </div>
+                <div className="relative">
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Enter your phone number"
+                    className="w-full px-6 py-4 rounded-xl bg-blue-gray backdrop-blur-sm border border-blue-black shadow-lg shadow-primary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-white placeholder-light-gray"
+                    required
+                    pattern="[0-9]{10}"
+                    title="Please enter a valid 10-digit phone number"
+                  />
+                </div>
+                <motion.button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full px-6 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-medium shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {isLoading ? (
+                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto" />
+                  ) : (
+                    <span className="flex items-center justify-center gap-2">
+                      Join Now <FiArrowRight className="w-4 h-4" />
+                    </span>
+                  )}
+                </motion.button>
+              </div>
+              <p className="text-sm text-light-gray text-center">
+                🔒 Join the waitlist. No credit card required.
+              </p>
+            </motion.form>
+
             {/* Live Launch Status */}
             <motion.div 
               variants={fadeInUp}
@@ -360,55 +409,6 @@ export default function Home() {
                 )}
               </p>
             </motion.div>
-
-            {/* Waitlist Form */}
-            <motion.form 
-              variants={fadeInUp}
-              onSubmit={handleSubmit}
-              className="max-w-md mx-auto mt-8 space-y-4"
-            >
-              <div className="space-y-4">
-                <div className="relative">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="w-full px-6 py-4 rounded-xl bg-blue-gray backdrop-blur-sm border border-blue-black shadow-lg shadow-primary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-white placeholder-light-gray"
-                    required
-                  />
-                </div>
-                <div className="relative">
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="Enter your phone number"
-                    className="w-full px-6 py-4 rounded-xl bg-blue-gray backdrop-blur-sm border border-blue-black shadow-lg shadow-primary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-white placeholder-light-gray"
-                    required
-                    pattern="[0-9]{10}"
-                    title="Please enter a valid 10-digit phone number"
-                  />
-                </div>
-                <motion.button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full px-6 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-medium shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {isLoading ? (
-                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto" />
-                  ) : (
-                    <span className="flex items-center justify-center gap-2">
-                      Join Now <FiArrowRight className="w-4 h-4" />
-                    </span>
-                  )}
-                </motion.button>
-              </div>
-              <p className="text-sm text-light-gray text-center">
-                🔒 Join the waitlist. No credit card required.
-              </p>
-            </motion.form>
 
             {/* Launch Benefits */}
             <motion.div 
