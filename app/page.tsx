@@ -14,9 +14,8 @@ const AnimatedParticles = dynamic(
   { ssr: false }
 )
 
-// Target date for launch (7 days from now)
-const targetDate = new Date()
-targetDate.setDate(targetDate.getDate() + 7)
+// Target date for launch (June 20, 2025)
+const targetDate = new Date('2025-06-20T00:00:00')
 
 // Target users for launch
 const TARGET_USERS = 500
@@ -31,7 +30,6 @@ export default function Home() {
   const [currentUsers, setCurrentUsers] = useState(0)
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [lastSignup, setLastSignup] = useState<{ email: string; time: string } | null>(null)
   const [recentSignups, setRecentSignups] = useState<Array<{ email: string; time: string }>>([])
 
   // Fetch current user count and recent signups
@@ -44,9 +42,6 @@ export default function Home() {
           setCurrentUsers(data.count)
           if (data.recentSignups) {
             setRecentSignups(data.recentSignups)
-            if (data.recentSignups.length > 0) {
-              setLastSignup(data.recentSignups[0])
-            }
           }
         }
       } catch (error) {
@@ -184,15 +179,6 @@ export default function Home() {
                   <div className="text-light-gray text-sm">Users Needed to Launch</div>
                 </div>
               </div>
-              {lastSignup && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 text-sm text-light-gray"
-                >
-                  Latest signup: {lastSignup.email} • {lastSignup.time}
-                </motion.div>
-              )}
             </motion.div>
 
             {/* Launch Badge with Live Counter */}
@@ -373,69 +359,38 @@ export default function Home() {
               </p>
             </motion.div>
 
-            {/* Recent Signups Feed */}
-            {recentSignups.length > 0 && (
-              <motion.div 
-                variants={fadeInUp}
-                className="max-w-md mx-auto mt-8 p-4 bg-blue-gray/30 backdrop-blur-sm rounded-xl border border-blue-black"
-              >
-                <h3 className="text-primary font-semibold mb-3">Recent Signups</h3>
-                <div className="space-y-2 max-h-32 overflow-y-auto">
-                  {recentSignups.map((signup, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-2 text-sm text-light-gray"
-                    >
-                      <FiUsers className="w-4 h-4 text-primary" />
-                      <span>{signup.email}</span>
-                      <span className="text-xs opacity-50">{signup.time}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-
-            {/* Waitlist Form with Enhanced Interactions */}
+            {/* Waitlist Form */}
             <motion.form 
               variants={fadeInUp}
               onSubmit={handleSubmit}
               className="max-w-md mx-auto mt-8 space-y-4"
             >
-              <div className="relative group">
-                <motion.div 
-                  className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-300"
+              <div className="relative">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email to join"
+                  className="w-full px-6 py-4 rounded-xl bg-blue-gray backdrop-blur-sm border border-blue-black shadow-lg shadow-primary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-white placeholder-light-gray"
+                  required
                 />
-                <div className="relative">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email for early access"
-                    className="w-full px-6 py-4 rounded-xl bg-blue-gray backdrop-blur-sm border border-blue-black shadow-lg shadow-primary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-white placeholder-light-gray group-hover:border-primary/50"
-                    required
-                  />
-                  <motion.button
-                    type="submit"
-                    disabled={isLoading}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg font-medium shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group-hover:scale-105"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    {isLoading ? (
-                      <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <span className="flex items-center gap-2">
-                        Get Early Access <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </span>
-                    )}
-                  </motion.button>
-                </div>
+                <motion.button
+                  type="submit"
+                  disabled={isLoading}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg font-medium shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {isLoading ? (
+                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      Join Now <FiArrowRight className="w-4 h-4" />
+                    </span>
+                  )}
+                </motion.button>
               </div>
               <p className="text-sm text-light-gray text-center">
-                🔒 Secure your spot. No credit card required.
+                🔒 Join the waitlist. No credit card required.
               </p>
             </motion.form>
 
