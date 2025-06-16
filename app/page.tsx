@@ -29,6 +29,7 @@ export default function Home() {
   })
   const [currentUsers, setCurrentUsers] = useState(0)
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [recentSignups, setRecentSignups] = useState<Array<{ email: string; time: string }>>([])
 
@@ -76,7 +77,7 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email || isLoading) return
+    if (!email || !phone || isLoading) return
 
     setIsLoading(true)
     try {
@@ -85,7 +86,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, phone }),
       })
 
       const data = await response.json()
@@ -93,6 +94,7 @@ export default function Home() {
       if (response.ok) {
         toast.success('Successfully joined the waitlist!')
         setEmail('')
+        setPhone('')
         // Update user count
         setCurrentUsers(prev => prev + 1)
       } else {
@@ -365,25 +367,39 @@ export default function Home() {
               onSubmit={handleSubmit}
               className="max-w-md mx-auto mt-8 space-y-4"
             >
-              <div className="relative">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email to join"
-                  className="w-full px-6 py-4 rounded-xl bg-blue-gray backdrop-blur-sm border border-blue-black shadow-lg shadow-primary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-white placeholder-light-gray"
-                  required
-                />
+              <div className="space-y-4">
+                <div className="relative">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="w-full px-6 py-4 rounded-xl bg-blue-gray backdrop-blur-sm border border-blue-black shadow-lg shadow-primary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-white placeholder-light-gray"
+                    required
+                  />
+                </div>
+                <div className="relative">
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Enter your phone number"
+                    className="w-full px-6 py-4 rounded-xl bg-blue-gray backdrop-blur-sm border border-blue-black shadow-lg shadow-primary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-white placeholder-light-gray"
+                    required
+                    pattern="[0-9]{10}"
+                    title="Please enter a valid 10-digit phone number"
+                  />
+                </div>
                 <motion.button
                   type="submit"
                   disabled={isLoading}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg font-medium shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-6 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-medium shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   whileTap={{ scale: 0.98 }}
                 >
                   {isLoading ? (
-                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto" />
                   ) : (
-                    <span className="flex items-center gap-2">
+                    <span className="flex items-center justify-center gap-2">
                       Join Now <FiArrowRight className="w-4 h-4" />
                     </span>
                   )}
