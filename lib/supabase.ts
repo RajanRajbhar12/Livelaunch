@@ -12,6 +12,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export type WaitlistUser = {
   id: string
   email: string
+  phone: string
   created_at: string
   status: 'pending' | 'verified'
 } 
